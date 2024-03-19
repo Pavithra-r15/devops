@@ -1,6 +1,6 @@
 #!/bin/bash
 database () {
-read -p "enter the service:" service
+	read -p "enter the application:" service
 status=$(systemctl is-active $service)
 if [ $status == "inactive" ]
 then
@@ -14,6 +14,8 @@ then
         sudo sed -i s/local/"all granted"/g /etc/httpd/conf.d/phpMyAdmin.conf
 	sudo systemctl restart mysqld.service
 	sudo systemctl restart httpd.service
+	sudo mysql -u root -p -e 'alter user "root"@"localhost" identified by"redhat";flush privileges;'
+	
 fi	
 }
 database "httpd"
